@@ -1,16 +1,14 @@
 const captchaUrl = 'https://www.google.com/recaptcha/api/siteverify'
 const captchaSecret = process.env.CAPTCHA_SECRET
 
+let body
+
 exports.handler = function(event, context, callback) {
   // Parse
   try {
-    const body = JSON.parse(event.body)
-    callback(null, {
-      statusCode: 200,
-      body,
-    })
+    body = JSON.parse(event.body)
   } catch (error) {
-      console.error(error)
+    console.error(error)
     callback(error.message, {
       statusCode: 400,
       body: `[ERROR] Invalid JSON - ${error.message}`
@@ -19,19 +17,27 @@ exports.handler = function(event, context, callback) {
   }
 
   // Verify
-  try {
-    const body = parse
-    fetch(captchaUrl, {
-      method: 'POST',
-      body,
-    })
+  fetch(captchaUrl, {
+    method: 'POST',
+    body: JSON.stringify({
+      secret: captchaSecret,
+      response: body.token,
+    }),
+  }).then((response) => {
+    return response.json()
+  }).then((data) => {
+    console.log(data)
+    if(!data.success) {
+      callback('Token verification failed', {
+        statusCode: 200,
+        body: `[BLOCKED] - ${data['error-codes'][0]}`
+      })
+    }
+  })
 
-  } catch (error) {
-    console.error(error)
-    callback(error.message, {
-      statusCode: 200,
-      body: `[BLOCKED] Invalid token`
-    })
-    return
-  }
+  // Continue handling the form data
+  callback('Success', {
+    statusCode: 200,
+    body: `[HURRAY] - You've reached the end of the user flow`
+  })
 }
