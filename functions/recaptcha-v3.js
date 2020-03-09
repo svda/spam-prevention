@@ -1,14 +1,16 @@
 const fetch = require('node-fetch')
 
-const captchaUrl = 'https://www.google.com/recaptcha/api/siteverify'
-const captchaSecret = process.env.CAPTCHA_SECRET
+const config = {
+  url: 'https://www.google.com/recaptcha/api/siteverify',
+  secret: process.env.CAPTCHA_SECRET,
+}
 
 exports.handler = function(event, context, callback) {
   try {
     const body = JSON.parse(event.body)
 
     // Verify
-    fetch(`${captchaUrl}?secret=${captchSecret}&response=${body.token}`, {
+    fetch(`${config.url}?secret=${config.secret}&response=${body.token}`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
