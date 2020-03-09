@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 
 const config = {
   url: 'https://www.google.com/recaptcha/api/siteverify',
-  secret: process.env.CAPTCHA_SECRET,
+  secret: process.env.RECAPTCHA_SECRET,
 }
 
 exports.handler = function(event, context, callback) {
