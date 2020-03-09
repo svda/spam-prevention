@@ -23,13 +23,14 @@ exports.handler = function(event, context, callback) {
           statusCode: 200,
           body: `[BLOCKED] - ${data['error-codes'][0]}`
         })
+        return
       }
-    })
 
-    // Continue here
-    callback('Success', {
-      statusCode: 200,
-      body: `[HURRAY] - You've reached the end of the user flow`
+      // Continue here
+      callback('Success', {
+        statusCode: 200,
+        body: `[HURRAY] - You've reached the end of the user flow`
+      })
     })
   } catch (error) {
     console.error(error)
