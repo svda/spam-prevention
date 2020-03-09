@@ -3,13 +3,13 @@ const fetch = require('node-fetch')
 const config = {
   url: 'https://www.google.com/recaptcha/api/siteverify',
   secret: process.env.RECAPTCHA_SECRET,
+  minimumScore: 0.7,
 }
 
 exports.handler = function(event, context, callback) {
   try {
     const body = JSON.parse(event.body)
 
-    // Verify
     fetch(`${config.url}?secret=${config.secret}&response=${body.token}`, {
       method: 'POST',
       mode: 'cors',
@@ -17,10 +17,8 @@ exports.handler = function(event, context, callback) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-    }).then((response) => {
-      return response.json()
-    }).then((data) => {
-      console.log(data)
+    }).then((response) => response.json())
+      .then((data) => {
       if(!data.success) {
         callback('Token verification failed', {
           statusCode: 200,
@@ -29,7 +27,14 @@ exports.handler = function(event, context, callback) {
         return
       }
 
-      // Continue here
+      if (data.score < config.minimumScore) {
+        callback('Token verification failed', {
+          statusCode: 200,
+          body: `[BLOCKED] - Score too low ${data.score}`
+        })
+        return
+      }
+
       callback('Success', {
         statusCode: 200,
         body: `[HURRAY] - You've reached the end of the user flow`
