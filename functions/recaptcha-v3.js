@@ -8,17 +8,13 @@ exports.handler = function(event, context, callback) {
     const body = JSON.parse(event.body)
 
     // Verify
-    fetch(captchaUrl, {
+    fetch(`${captchaUrl}?secret=${captchSecret}&response=${body.token}`, {
       method: 'POST',
       mode: 'cors',
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new FormData({
-        secret: captchaSecret,
-        response: body.token,
-      }),
     }).then((response) => {
       return response.json()
     }).then((data) => {
