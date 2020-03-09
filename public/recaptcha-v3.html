@@ -2,6 +2,8 @@
   <head>
     <script src="https://www.google.com/recaptcha/api.js?render=6Lc83N8UAAAAAJJ1D0q860xddU7WM_UOC5gOXXlY"></script>
     <script>
+      const url = 'https://nervous-bardeen-d31a2c.netlify.com/.netlify/functions/recaptcha-v3'
+
       function execute() {
         grecaptcha.execute('6Lc83N8UAAAAAJJ1D0q860xddU7WM_UOC5gOXXlY', { action: 'recaptchav3' })
           .then((token) => {
@@ -24,14 +26,15 @@
       function doSubmit(event) {
         event.preventDefault()
         const values = getValues(event.target)
-        console.log(values)
-        fetch('https://nervous-bardeen-d31a2c.netlify.com/.netlify/functions/recaptcha-v3', {
+        fetch(url, {
           method: 'POST',
           body: JSON.stringify(values)
         }).then((response) => {
           return response.json()
         }).then((data) => {
-          console.log(data)
+          document.getElementById('response').innerHTML = data
+        }).catch((error) => {
+          document.getElementById('response').innerHTML = error.message
         })
         return false
       }
@@ -64,6 +67,9 @@
       <input type="text" name="subject" value="A subject" />
       <textarea name="content">Some example content.</textarea>
       <button type="submit">Submit</button>
+
+      <p>Response:</p>
+      <div id="response"></div>
     </form>
   </body>
 </html>

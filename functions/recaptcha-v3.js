@@ -9,7 +9,7 @@ const config = {
 exports.handler = function(event, context, callback) {
   try {
     const body = JSON.parse(event.body)
-
+    
     fetch(`${config.url}?secret=${config.secret}&response=${body.token}`, {
       method: 'POST',
       mode: 'cors',
