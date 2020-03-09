@@ -1,0 +1,11 @@
+{
+  "name": "spam-prevention",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:svda/spam-prevention.git",
+  "author": "Sander van den Akker <sander@sandervandenakker.nl>",
+  "license": "MIT",
+  "scripts": {
+    "build": "echo building..."
+  }
+}
