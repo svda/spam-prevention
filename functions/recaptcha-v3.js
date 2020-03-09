@@ -6,7 +6,7 @@ const captchaSecret = process.env.CAPTCHA_SECRET
 exports.handler = function(event, context, callback) {
   try {
     const body = JSON.parse(event.body)
-
+    console.log(body)
     // Verify
     fetch(captchaUrl, {
       method: 'POST',
