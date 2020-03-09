@@ -1,3 +1,5 @@
+const fetch = require('node-fetch')
+
 const captchaUrl = 'https://www.google.com/recaptcha/api/siteverify'
 const captchaSecret = process.env.CAPTCHA_SECRET
 
