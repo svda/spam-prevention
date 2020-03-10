@@ -37,7 +37,7 @@ exports.handler = function(event, context, callback) {
 
       callback(null, {
         statusCode: 200,
-        body: `[HURRAY] - You've reached the end of the user flow`
+        body: data,
       })
     })
   } catch (error) {
